@@ -1,14 +1,10 @@
-package com.intchip.efdrc;
+package com.techjump.wifi_camera;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
-
-import com.intchip.efdrc.R;
-import com.intchip.media.SDLNative;
 
 public class StreamMadiaPlayer implements SurfaceHolder.Callback {
 	private final String TAG = "StreamMadiaPlayer";

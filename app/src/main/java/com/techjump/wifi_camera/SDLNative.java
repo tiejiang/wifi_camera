@@ -1,4 +1,4 @@
-package com.intchip.media;
+package com.techjump.wifi_camera;
 
 import java.util.Arrays;
 
