@@ -219,7 +219,6 @@ public class StreamMadiaPlayer implements SurfaceHolder.Callback {
 				}
 			}).start();
 		}
-
 	}
 
 	@Override
