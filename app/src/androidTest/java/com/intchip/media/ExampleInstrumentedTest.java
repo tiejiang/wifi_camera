@@ -1,4 +1,4 @@
-package com.techjump.wifi_camera;
+package com.intchip.media;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.techjump.wifi_camera;
+package com.intchip.media;
 
 import java.util.Arrays;
 
@@ -172,5 +172,4 @@ public class SDLNative {
     	System.loadLibrary("mp4v2");
     	System.loadLibrary("mzmedia");
     }
-
 }

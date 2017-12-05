@@ -1,4 +1,4 @@
-package com.techjump.wifi_camera;
+package com.intchip.media;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;

@@ -1,4 +1,4 @@
-package com.techjump.wifi_camera;
+package com.intchip.media;
 
 import org.junit.Test;
 
