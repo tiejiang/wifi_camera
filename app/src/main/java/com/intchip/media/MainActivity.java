@@ -14,9 +14,15 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
         setContentView(R.layout.layout);
         mStreamMadiaPlayer = new StreamMadiaPlayer(this);
-        mStreamMadiaPlayer.onNetworkConnected();
+//        mStreamMadiaPlayer.onNetworkConnected();
 //        mVideoSurfaceView = (SurfaceView)findViewById(R.id.main_surface);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mStreamMadiaPlayer.onNetworkConnected();
     }
 
     @Override
