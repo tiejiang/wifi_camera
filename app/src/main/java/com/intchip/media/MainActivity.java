@@ -8,16 +8,27 @@ public class MainActivity extends Activity {
 
     public StreamMadiaPlayer mStreamMadiaPlayer;
     public SurfaceView mVideoSurfaceView;
+    public static MainActivity mMainActivityInstance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
         setContentView(R.layout.layout);
+        mMainActivityInstance = this;
         mStreamMadiaPlayer = (StreamMadiaPlayer)findViewById(R.id.main_surface);
 //        mStreamMadiaPlayer = new StreamMadiaPlayer(this);
 
     }
 
+    public static MainActivity getMainActivityInstance(){
+
+        return mMainActivityInstance;
+    }
+
+    public StreamMadiaPlayer getStreamMadiaPlayerInstance(){
+
+        return mStreamMadiaPlayer;
+    }
     @Override
     protected void onStart() {
         super.onStart();

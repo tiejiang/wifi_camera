@@ -1,6 +1,5 @@
 package com.intchip.media;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Region;
 import android.hardware.Camera;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,9 +24,10 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 	public static boolean mIsPaused = false, mIsSurfaceReady = false, mHasFocus = true;
 	public static boolean mExitCalledFromJava;
 	private static SurfaceView mSurface;
+	private StreamMadiaPlayer mStreamMadiaPlayer;
 	// This is what SDL runs in. It invokes SDL_main(), eventually
 	protected static Thread mSDLThread;
-	protected static Activity mSingleton;
+//	protected static Activity mSingleton;
 	public static int screenWidth, screenHeight;
 	private Canvas mCanvas;
 	private boolean isDrawing;
@@ -54,7 +55,11 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 	public StreamMadiaPlayer(Context context, AttributeSet attrs, int defstyle){
 		super(context, attrs, defstyle);
 		initView();
-
+//		mResources = getResources();
+//		initialize();
+//		initPaint();
+//
+//		getScreenResolution();
 	}
 
 	public StreamMadiaPlayer(Context context, AttributeSet attrs){
@@ -103,7 +108,7 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-		height=widthSize;
+		height = widthSize;
 
 		Log.e("onMeasure", "draw: widthMeasureSpec = " +widthSize + "  heightMeasureSpec = " + heightSize);
 
@@ -254,7 +259,8 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.d(TAG, "surfaceCreated()");
 		holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
-		isDrawing = true;
+		mStreamMadiaPlayer = MainActivity.getMainActivityInstance().getStreamMadiaPlayerInstance();
+//		isDrawing = true;
 //		mBitmap = BitmapFactory.decodeResource(mResources, R.drawable.aim_at);
 //		mBitmap = ImageUtil.getBitmap(mBitmap);
 //		new Thread(new DrawRunnable()).start();
@@ -350,25 +356,27 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 		mIsSurfaceReady = true;
 		SDLNative.onNativeSurfaceChanged();
 
-//		if (mSDLThread == null) {
-//			mSDLThread = new Thread(new SDLMain(), "SDLThread");
-//			mSDLThread.start();
-//
-//			// Set up a listener thread to catch when the native thread ends
-//			new Thread(new Runnable() {
-//				public void run() {
-//					try {
-//						mSDLThread.join();
-//					} catch (Exception e) {
-//					} finally {
-//						// Native thread has finished
-//						if (!mExitCalledFromJava) {
-//							handleNativeExit();
-//						}
-//					}
-//				}
-//			}).start();
-//		}
+		if (mSDLThread == null) {
+			mSDLThread = new Thread(new SDLMain(), "SDLThread");
+			mSDLThread.start();
+
+			// Set up a listener thread to catch when the native thread ends
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						mSDLThread.join(1000);
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+					finally {
+						// Native thread has finished
+						if (!mExitCalledFromJava) {
+							handleNativeExit();
+						}
+					}
+				}
+			}).start();
+		}
 	}
 
 	@Override
@@ -387,8 +395,8 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 	 * Simple nativeInit() runnable
 	 */
 	class SDLMain implements Runnable {
-		SDLNative objSDLInfo = new SDLNative(mSurface, screenWidth, screenHeight);
-
+//		SDLNative objSDLInfo = new SDLNative(mSurface, screenWidth, screenHeight);
+		SDLNative objSDLInfo = new SDLNative(mStreamMadiaPlayer, screenWidth, screenHeight);
 		public void run() {
 			SDLNative.nativeInit(objSDLInfo);
 		}
@@ -416,16 +424,17 @@ public class StreamMadiaPlayer extends SurfaceView implements SurfaceHolder.Call
 	/* The native thread has finished */
 	public static void handleNativeExit() {
 		mSDLThread = null;
-		mSingleton.finish();
+//		mSingleton.finish();
 	}
 
 	public void getScreenResolution() {
-//		screenWidth = mSingleton.getWindowManager().getDefaultDisplay()
-//				.getWidth();
-		screenWidth = getWidth();
-		screenHeight = getHeight();
-//		screenHeight = mSingleton.getWindowManager().getDefaultDisplay()
-//				.getHeight();
 
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		screenWidth = dm.widthPixels;
+		screenHeight = dm.heightPixels;
+//		screenWidth = mSingleton.getWindowManager().getDefaultDisplay().getWidth();
+//		screenHeight = mSingleton.getWindowManager().getDefaultDisplay().getHeight();
+//		screenWidth = getWidth();
+//		screenHeight = getHeight();
 	}
 }

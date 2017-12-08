@@ -3,7 +3,8 @@
     android:id="@+id/root_view"
     android:padding="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF">
 
      <RelativeLayout
          android:layout_width="match_parent"
@@ -21,10 +22,11 @@
               android:background="#00000000"/>
 
           <ImageView
-              android:layout_width="70dp"
-              android:layout_height="70dp"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
               android:src="@drawable/aim_at"
-              android:layout_centerInParent="true"
+              android:layout_marginTop="265dp"
+              android:layout_centerHorizontal="true"
               />
      </RelativeLayout>
 
